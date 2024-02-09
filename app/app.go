@@ -552,6 +552,7 @@ func NewApp(
 		tokenFactoryCapabilities,
 		govModAddress,
 	)
+	wasmOpts = append(wasmOpts, bindings.RegisterCustomPlugins(app.BankKeeper, &app.TokenFactoryKeeper)...)
 
 	// IBC Fee Module keeper
 	app.IBCFeeKeeper = ibcfeekeeper.NewKeeper(
@@ -604,10 +605,6 @@ func NewApp(
 	if err != nil {
 		panic(fmt.Sprintf("error while reading wasm config: %s", err))
 	}
-
-	// Move custom query of token factory to stargate, still use custom msg which is tfOpts[1]
-	tfOpts := bindings.RegisterCustomPlugins(app.BankKeeper, &app.TokenFactoryKeeper)
-	wasmOpts = append(wasmOpts, tfOpts...)
 
 	// The last arguments can contain custom message handlers, and custom query handlers,
 	// if we want to allow any custom callbacks
