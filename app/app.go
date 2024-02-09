@@ -151,7 +151,6 @@ var (
 		tokenfactorytypes.EnableBurnFrom,
 		tokenfactorytypes.EnableForceTransfer,
 		tokenfactorytypes.EnableSetMetadata,
-		tokenfactorytypes.EnableAuthoritiesSudoMint,
 	}
 )
 

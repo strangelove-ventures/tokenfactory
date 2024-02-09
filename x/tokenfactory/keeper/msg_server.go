@@ -52,23 +52,19 @@ func (server msgServer) Mint(goCtx context.Context, msg *types.MsgMint) (*types.
 	var err error
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	sudoEnabled := types.IsCapabilityEnabled(server.Keeper.enabledCapabilities, types.EnableAuthoritiesSudoMint)
+	// Standard User Verification
+	_, denomExists := server.bankKeeper.GetDenomMetaData(ctx, msg.Amount.Denom)
+	if !denomExists {
+		return nil, types.ErrDenomDoesNotExist.Wrapf("denom: %s", msg.Amount.Denom)
+	}
 
-	if !sudoEnabled {
-		// Standard User Verification
-		_, denomExists := server.bankKeeper.GetDenomMetaData(ctx, msg.Amount.Denom)
-		if !denomExists {
-			return nil, types.ErrDenomDoesNotExist.Wrapf("denom: %s. sudoEnabled: %v", msg.Amount.Denom, sudoEnabled)
-		}
+	authorityMetadata, err := server.Keeper.GetAuthorityMetadata(ctx, msg.Amount.GetDenom())
+	if err != nil {
+		return nil, err
+	}
 
-		authorityMetadata, err := server.Keeper.GetAuthorityMetadata(ctx, msg.Amount.GetDenom())
-		if err != nil {
-			return nil, err
-		}
-
-		if msg.Sender != authorityMetadata.GetAdmin() {
-			return nil, types.ErrUnauthorized
-		}
+	if msg.Sender != authorityMetadata.GetAdmin() {
+		return nil, types.ErrUnauthorized
 	}
 
 	if msg.MintToAddress == "" {
