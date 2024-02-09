@@ -7,9 +7,9 @@ import (
 
 	"github.com/CosmWasm/wasmd/x/wasm/keeper"
 	wasmvmtypes "github.com/CosmWasm/wasmvm/types"
-	"github.com/cosmos/tokenfactory/app"
-	bindings "github.com/cosmos/tokenfactory/x/tokenfactory/bindings/types"
-	"github.com/cosmos/tokenfactory/x/tokenfactory/types"
+	"github.com/reecepbcups/tokenfactory/app"
+	bindings "github.com/reecepbcups/tokenfactory/x/tokenfactory/bindings/types"
+	"github.com/reecepbcups/tokenfactory/x/tokenfactory/types"
 	"github.com/stretchr/testify/require"
 
 	sdkmath "cosmossdk.io/math"

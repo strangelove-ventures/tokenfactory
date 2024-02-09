@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/cosmos/tokenfactory/app"
-	appparams "github.com/cosmos/tokenfactory/app/params"
+	"github.com/reecepbcups/tokenfactory/app"
+	appparams "github.com/reecepbcups/tokenfactory/app/params"
 	"github.com/stretchr/testify/suite"
 
 	"github.com/cometbft/cometbft/crypto/ed25519"

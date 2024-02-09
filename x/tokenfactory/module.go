@@ -13,13 +13,13 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/cosmos/tokenfactory/x/tokenfactory/client/cli"
-	"github.com/cosmos/tokenfactory/x/tokenfactory/exported"
-	"github.com/cosmos/tokenfactory/x/tokenfactory/keeper"
-	simulation "github.com/cosmos/tokenfactory/x/tokenfactory/simulation"
-	"github.com/cosmos/tokenfactory/x/tokenfactory/types"
 	"github.com/gorilla/mux"
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
+	"github.com/reecepbcups/tokenfactory/x/tokenfactory/client/cli"
+	"github.com/reecepbcups/tokenfactory/x/tokenfactory/exported"
+	"github.com/reecepbcups/tokenfactory/x/tokenfactory/keeper"
+	simulation "github.com/reecepbcups/tokenfactory/x/tokenfactory/simulation"
+	"github.com/reecepbcups/tokenfactory/x/tokenfactory/types"
 	"github.com/spf13/cobra"
 
 	abci "github.com/cometbft/cometbft/abci/types"

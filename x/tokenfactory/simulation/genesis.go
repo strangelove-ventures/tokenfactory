@@ -3,8 +3,8 @@ package simulation
 import (
 	"math/rand"
 
-	appparams "github.com/cosmos/tokenfactory/app/params"
-	"github.com/cosmos/tokenfactory/x/tokenfactory/types"
+	appparams "github.com/reecepbcups/tokenfactory/app/params"
+	"github.com/reecepbcups/tokenfactory/x/tokenfactory/types"
 
 	sdkmath "cosmossdk.io/math"
 

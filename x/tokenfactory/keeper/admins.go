@@ -3,7 +3,7 @@ package keeper
 import (
 	"context"
 
-	"github.com/cosmos/tokenfactory/x/tokenfactory/types"
+	"github.com/reecepbcups/tokenfactory/x/tokenfactory/types"
 
 	"github.com/cosmos/gogoproto/proto"
 

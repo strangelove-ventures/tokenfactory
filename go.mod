@@ -1,4 +1,4 @@
-module github.com/cosmos/tokenfactory
+module github.com/reecepbcups/tokenfactory
 
 go 1.21
 

@@ -3,10 +3,10 @@ package v2_test
 import (
 	"testing"
 
-	"github.com/cosmos/tokenfactory/x/tokenfactory"
-	"github.com/cosmos/tokenfactory/x/tokenfactory/exported"
-	v2 "github.com/cosmos/tokenfactory/x/tokenfactory/migrations/v2"
-	"github.com/cosmos/tokenfactory/x/tokenfactory/types"
+	"github.com/reecepbcups/tokenfactory/x/tokenfactory"
+	"github.com/reecepbcups/tokenfactory/x/tokenfactory/exported"
+	v2 "github.com/reecepbcups/tokenfactory/x/tokenfactory/migrations/v2"
+	"github.com/reecepbcups/tokenfactory/x/tokenfactory/types"
 	"github.com/stretchr/testify/require"
 
 	sdkstore "cosmossdk.io/store/types"

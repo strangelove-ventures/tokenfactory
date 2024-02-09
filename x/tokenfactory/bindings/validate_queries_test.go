@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"testing"
 
-	wasmbinding "github.com/cosmos/tokenfactory/x/tokenfactory/bindings"
+	wasmbinding "github.com/reecepbcups/tokenfactory/x/tokenfactory/bindings"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
