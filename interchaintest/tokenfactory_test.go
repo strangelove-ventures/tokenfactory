@@ -103,7 +103,7 @@ func TestTokenFactory(t *testing.T) {
 	}
 
 	// Mint on the contract for the user to ensure mint bindings work.
-	mintAmt = 31
+	mintAmt := 31
 	mintMsg := fmt.Sprintf(`{"mint":{"address":"%s","denom":[{"denom":"%s","amount":"%d"}]}}`, uaddr2, tfDenom, mintAmt)
 	if _, err := appChain.ExecuteContract(ctx, user.KeyName(), contract, mintMsg); err != nil {
 		t.Fatal(err)
