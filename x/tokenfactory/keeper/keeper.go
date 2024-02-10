@@ -15,6 +15,9 @@ import (
 )
 
 type (
+	// IsAdmin is a function signature that checks if an address is an admin.
+	IsSudoAdmin func(ctx context.Context, addr string) bool
+
 	Keeper struct {
 		cdc      codec.BinaryCodec
 		storeKey store.StoreKey
@@ -28,6 +31,8 @@ type (
 		// the address capable of executing a MsgUpdateParams message. Typically, this
 		// should be the x/gov module account.
 		authority string
+
+		IsSudoAdminFunc IsSudoAdmin
 	}
 )
 
@@ -39,6 +44,8 @@ func NewKeeper(
 	bankKeeper types.BankKeeper,
 	communityPoolKeeper types.CommunityPoolKeeper,
 	enabledCapabilities []string,
+	// use DefaultIsSudoAdminFunc if you don't have a custom one
+	isSudoAdminFunc IsSudoAdmin,
 	authority string,
 ) Keeper {
 	return Keeper{
@@ -52,14 +59,13 @@ func NewKeeper(
 		authority: authority,
 
 		enabledCapabilities: enabledCapabilities,
+
+		IsSudoAdminFunc: isSudoAdminFunc,
 	}
 }
 
-func DefaultIsAdminFunc(ctx context.Context, addr string) bool {
-	return false
-}
-
-func DefaultExtraSudoAllowedCheckFunc(ctx context.Context) bool {
+// DefaultIsSudoAdminFunc returns false for all addresses.
+func DefaultIsSudoAdminFunc(ctx context.Context, addr string) bool {
 	return false
 }
 

@@ -1,6 +1,7 @@
 package keeper_test
 
 import (
+	"context"
 	"fmt"
 
 	"github.com/reecepbcups/tokenfactory/x/tokenfactory/types"
@@ -21,8 +22,8 @@ func (suite *KeeperTestSuite) TestMintDenomMsg() {
 		amount                int64
 		mintDenom             string
 		admin                 string
+		sudoer                string
 		expectedMessageEvents int // the valid case should emit >= 1
-		inflation             sdkmath.LegacyDec
 	}{
 		{
 			desc:      "denom does not exist",
@@ -37,19 +38,37 @@ func (suite *KeeperTestSuite) TestMintDenomMsg() {
 			admin:                 suite.TestAccs[0].String(),
 			expectedMessageEvents: 1,
 		},
+		// Sudo Mints
+		{
+			desc:                  "successful sudo mint executed by an allowed sudoer",
+			amount:                10,
+			mintDenom:             "unique",
+			admin:                 suite.TestAccs[0].String(),
+			sudoer:                suite.TestAccs[0].String(), // this user can sudo mint
+			expectedMessageEvents: 1,
+		},
+		{
+			desc:      "invalid sudo mint from a non admin",
+			amount:    10,
+			mintDenom: "unique",
+			admin:     suite.TestAccs[0].String(),
+			sudoer:    "nope",
+		},
 	} {
 		suite.Run(fmt.Sprintf("Case %s", tc.desc), func() {
 			ctx := suite.Ctx.WithEventManager(sdk.NewEventManager())
 			suite.Require().Equal(0, len(ctx.EventManager().Events()))
 
-			// set minter values
-			minter, err := suite.App.MintKeeper.Minter.Get(ctx)
-			suite.Require().NoError(err)
-			minter.Inflation = tc.inflation
-			suite.Require().NoError(suite.App.MintKeeper.Minter.Set(ctx, minter))
+			// Override the default IsSudoAdminFunc for testing
+			suite.App.TokenFactoryKeeper.IsSudoAdminFunc = func(ctx context.Context, addr string) bool {
+				return tc.sudoer == addr
+			}
+
+			suite.OverrideMsgServer(suite.App.TokenFactoryKeeper)
 
 			// Test mint message
-			suite.msgServer.Mint(ctx, types.NewMsgMint(tc.admin, sdk.NewInt64Coin(tc.mintDenom, 10))) //nolint:errcheck
+			suite.msgServer.Mint(ctx, types.NewMsgMint(tc.admin, sdk.NewInt64Coin(tc.mintDenom, tc.amount))) //nolint:errcheck
+
 			// Ensure current number and type of event is emitted
 			suite.AssertEventEmitted(ctx, types.TypeMsgMint, tc.expectedMessageEvents)
 		})

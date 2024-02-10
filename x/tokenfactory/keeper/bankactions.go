@@ -8,14 +8,16 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
-func (k Keeper) mintTo(ctx sdk.Context, amount sdk.Coin, mintTo string) error {
+func (k Keeper) mintTo(ctx sdk.Context, amount sdk.Coin, mintTo string, isSudo bool) error {
 	// verify that denom is an x/tokenfactory denom
-	_, _, err := types.DeconstructDenom(amount.Denom)
-	if err != nil {
-		return err
+	if !isSudo {
+		_, _, err := types.DeconstructDenom(amount.Denom)
+		if err != nil {
+			return err
+		}
 	}
 
-	err = k.bankKeeper.MintCoins(ctx, types.ModuleName, sdk.NewCoins(amount))
+	err := k.bankKeeper.MintCoins(ctx, types.ModuleName, sdk.NewCoins(amount))
 	if err != nil {
 		return err
 	}

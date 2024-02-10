@@ -46,3 +46,7 @@ func (suite *KeeperTestSuite) CreateDefaultDenom() {
 	res, _ := suite.msgServer.CreateDenom(suite.Ctx, types.NewMsgCreateDenom(suite.TestAccs[0].String(), "bitcoin"))
 	suite.defaultDenom = res.GetNewTokenDenom()
 }
+
+func (suite *KeeperTestSuite) OverrideMsgServer(newKeeper keeper.Keeper) {
+	suite.msgServer = keeper.NewMsgServerImpl(newKeeper)
+}
