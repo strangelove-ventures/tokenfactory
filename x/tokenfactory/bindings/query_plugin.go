@@ -5,7 +5,7 @@ import (
 	"fmt"
 
 	wasmvmtypes "github.com/CosmWasm/wasmvm/types"
-	bindingstypes "github.com/reecepbcups/tokenfactory/x/tokenfactory/bindings/types"
+	bindingstypes "github.com/strangelove-ventures/tokenfactory/x/tokenfactory/bindings/types"
 
 	errorsmod "cosmossdk.io/errors"
 

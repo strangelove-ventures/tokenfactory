@@ -46,7 +46,7 @@ empty = $(whitespace) $(whitespace)
 comma := ,
 build_tags_comma_sep := $(subst $(empty),$(comma),$(build_tags))
 
-# -X github.com/reecepbcups/tokenfactory/app.Bech32Prefix=tokenfactory
+# -X github.com/strangelove-ventures/tokenfactory/app.Bech32Prefix=tokenfactory
 ldflags = -X github.com/cosmos/cosmos-sdk/version.Name=tokenfactory \
 		  -X github.com/cosmos/cosmos-sdk/version.AppName=tokend \
 		  -X github.com/cosmos/cosmos-sdk/version.Version=$(VERSION) \

@@ -1,8 +1,8 @@
 package v2
 
 import (
-	"github.com/reecepbcups/tokenfactory/x/tokenfactory/exported"
-	"github.com/reecepbcups/tokenfactory/x/tokenfactory/types"
+	"github.com/strangelove-ventures/tokenfactory/x/tokenfactory/exported"
+	"github.com/strangelove-ventures/tokenfactory/x/tokenfactory/types"
 
 	sdkstore "cosmossdk.io/store/types"
 
