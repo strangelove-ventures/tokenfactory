@@ -9,10 +9,10 @@ import (
 	wasmcli "github.com/CosmWasm/wasmd/x/wasm/client/cli"
 	wasmkeeper "github.com/CosmWasm/wasmd/x/wasm/keeper"
 	"github.com/prometheus/client_golang/prometheus"
-	"github.com/reecepbcups/tokenfactory/app"
 	"github.com/spf13/cast"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
+	"github.com/strangelove-ventures/tokenfactory/app"
 
 	cmtcfg "github.com/cometbft/cometbft/config"
 

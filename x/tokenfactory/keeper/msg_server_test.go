@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/reecepbcups/tokenfactory/x/tokenfactory/types"
+	"github.com/strangelove-ventures/tokenfactory/x/tokenfactory/types"
 
 	sdkmath "cosmossdk.io/math"
 

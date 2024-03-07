@@ -6,9 +6,9 @@ import (
 
 	wasmkeeper "github.com/CosmWasm/wasmd/x/wasm/keeper"
 	wasmtypes "github.com/CosmWasm/wasmd/x/wasm/types"
-	"github.com/reecepbcups/tokenfactory/app"
-	"github.com/reecepbcups/tokenfactory/app/params"
 	"github.com/spf13/cobra"
+	"github.com/strangelove-ventures/tokenfactory/app"
+	"github.com/strangelove-ventures/tokenfactory/app/params"
 
 	dbm "github.com/cosmos/cosmos-db"
 

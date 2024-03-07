@@ -3,8 +3,8 @@ package app
 import (
 	"fmt"
 
-	"github.com/reecepbcups/tokenfactory/app/upgrades"
-	"github.com/reecepbcups/tokenfactory/app/upgrades/noop"
+	"github.com/strangelove-ventures/tokenfactory/app/upgrades"
+	"github.com/strangelove-ventures/tokenfactory/app/upgrades/noop"
 
 	upgradetypes "cosmossdk.io/x/upgrade/types"
 )
