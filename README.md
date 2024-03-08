@@ -1,1 +1,1 @@
-# SDK v50 TokenFactory
+# Cosmos-SDK x/TokenFactory
