@@ -10,8 +10,8 @@ import (
 
 	"github.com/CosmWasm/wasmd/x/wasm"
 	wasmkeeper "github.com/CosmWasm/wasmd/x/wasm/keeper"
-	apphelpers "github.com/reecepbcups/tokenfactory/app/helpers"
-	appparams "github.com/reecepbcups/tokenfactory/app/params"
+	apphelpers "github.com/strangelove-ventures/tokenfactory/app/helpers"
+	appparams "github.com/strangelove-ventures/tokenfactory/app/params"
 	"github.com/stretchr/testify/require"
 
 	abci "github.com/cometbft/cometbft/abci/types"

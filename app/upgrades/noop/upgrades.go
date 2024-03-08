@@ -3,7 +3,7 @@ package noop
 import (
 	"context"
 
-	"github.com/reecepbcups/tokenfactory/app/upgrades"
+	"github.com/strangelove-ventures/tokenfactory/app/upgrades"
 
 	storetypes "cosmossdk.io/store/types"
 	upgradetypes "cosmossdk.io/x/upgrade/types"
