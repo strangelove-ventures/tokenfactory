@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 
-	wasmvmtypes "github.com/CosmWasm/wasmvm/types"
+	wasmvmtypes "github.com/CosmWasm/wasmvm/v2/types"
 	bindingstypes "github.com/strangelove-ventures/tokenfactory/x/tokenfactory/bindings/types"
 
 	errorsmod "cosmossdk.io/errors"

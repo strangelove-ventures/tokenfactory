@@ -7,7 +7,6 @@ import (
 	"os"
 	"path/filepath"
 	"sort"
-	"strings"
 
 	wasmd "github.com/CosmWasm/wasmd/app"
 	"github.com/CosmWasm/wasmd/x/wasm"
@@ -627,7 +626,7 @@ func NewApp(
 		app.GRPCQueryRouter(),
 		wasmDir,
 		wasmConfig,
-		strings.Join(wasmd.AllCapabilities(), ","),
+		append(wasmd.AllCapabilities(), "token_factory"),
 		govModAddress,
 		wasmOpts...,
 	)
