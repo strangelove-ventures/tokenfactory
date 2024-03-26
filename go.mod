@@ -2,8 +2,6 @@ module github.com/strangelove-ventures/tokenfactory
 
 go 1.21
 
-toolchain go1.21.0
-
 replace (
 	// core v0.12 was tagged wrong (SDK v51).
 	cosmossdk.io/core => cosmossdk.io/core v0.11.0
