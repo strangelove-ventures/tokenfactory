@@ -1,6 +1,6 @@
 module github.com/strangelove-ventures/tokenfactory/interchaintest
 
-go 1.21.1
+go 1.21
 
 replace (
 	cosmossdk.io/core v0.12.0 => cosmossdk.io/core v0.11.0 // proper SDK v50 version

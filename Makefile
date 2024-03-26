@@ -130,7 +130,21 @@ test-integration:
 	@echo "--> Running integration tests"
 	cd integration; go test -v ./...
 
-.PHONY: test test-integration
+coverage: ## Run coverage report
+	@echo "--> Running coverage"
+	@go test -race -cpu=$$(nproc) -covermode=atomic -coverprofile=coverage.out $$(go list ./...) ./interchaintest/... -coverpkg=github.com/strangelove-ventures/tokenfactory/... > /dev/null 2>&1
+	@echo "--> Running coverage filter"
+	@./scripts/filter-coverage.sh
+	@echo "--> Running coverage report"
+	@go tool cover -func=coverage-filtered.out
+	@echo "--> Running coverage html"
+	@go tool cover -html=coverage-filtered.out -o coverage.html
+	@echo "--> Coverage report available at coverage.html"
+	@echo "--> Cleaning up coverage files"
+	@rm coverage.out
+	@echo "--> Running coverage complete"
+
+.PHONY: test test-integration coverage
 
 ##################
 ###  Protobuf  ###
