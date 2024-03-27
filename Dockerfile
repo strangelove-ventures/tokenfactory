@@ -9,7 +9,7 @@ WORKDIR /code
 ADD go.mod go.sum ./
 RUN set -eux; \
     export ARCH=$(uname -m); \
-    WASM_VERSION=$(go list -m all | grep github.com/CosmWasm/wasmvm || true); \
+    WASM_VERSION=$(go list -m all | grep github.com/CosmWasm/wasmvm/v2 || true); \
     if [ ! -z "${WASM_VERSION}" ]; then \
       WASMVM_REPO=$(echo $WASM_VERSION | awk '{print $1}');\
       WASMVM_VERS=$(echo $WASM_VERSION | awk '{print $2}');\
