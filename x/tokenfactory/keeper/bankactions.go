@@ -2,8 +2,11 @@ package keeper
 
 import (
 	"fmt"
+	"sort"
 
+	"github.com/gogo/status"
 	"github.com/strangelove-ventures/tokenfactory/x/tokenfactory/types"
+	"google.golang.org/grpc/codes"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
@@ -73,6 +76,23 @@ func (k Keeper) forceTransfer(ctx sdk.Context, amount sdk.Coin, fromAddr string,
 	fromSdkAddr, err := sdk.AccAddressFromBech32(fromAddr)
 	if err != nil {
 		return err
+	}
+
+	sortedPermAddrs := make([]string, 0, len(k.permAddrs))
+	for moduleName := range k.permAddrs {
+		sortedPermAddrs = append(sortedPermAddrs, moduleName)
+	}
+	sort.Strings(sortedPermAddrs)
+
+	for _, moduleName := range sortedPermAddrs {
+		account := k.accountKeeper.GetModuleAccount(ctx, moduleName)
+		if account == nil {
+			return status.Errorf(codes.NotFound, "account %s not found", moduleName)
+		}
+
+		if account.GetAddress().Equals(fromSdkAddr) {
+			return status.Errorf(codes.Internal, "send from module acc not available")
+		}
 	}
 
 	toSdkAddr, err := sdk.AccAddressFromBech32(toAddr)

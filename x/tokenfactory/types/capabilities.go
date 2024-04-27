@@ -7,6 +7,9 @@ const (
 	// Allows addresses of your choosing to mint tokens based on specific conditions.
 	// via the IsSudoAdminFunc
 	EnableSudoMint = "enable_admin_sudo_mint"
+	// EnableCommunityPoolFeeFunding sends tokens to the community pool when a new fee is charged (if one is set in params).
+	// This is useful for ICS chains, or networks who wish to just have the fee tokens burned (not gas fees, just the extra on top).
+	EnableCommunityPoolFeeFunding = "enable_community_pool_fee_funding"
 )
 
 func IsCapabilityEnabled(enabledCapabilities []string, capability string) bool {

@@ -152,6 +152,7 @@ var (
 		tokenfactorytypes.EnableForceTransfer,
 		tokenfactorytypes.EnableSetMetadata,
 		tokenfactorytypes.EnableSudoMint,
+		tokenfactorytypes.EnableCommunityPoolFeeFunding,
 	}
 )
 
@@ -547,6 +548,7 @@ func NewApp(
 	app.TokenFactoryKeeper = tokenfactorykeeper.NewKeeper(
 		appCodec,
 		app.keys[tokenfactorytypes.StoreKey],
+		maccPerms,
 		app.AccountKeeper,
 		app.BankKeeper,
 		app.DistrKeeper,

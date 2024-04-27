@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 
+	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 	"github.com/strangelove-ventures/tokenfactory/x/tokenfactory/types"
 
 	"cosmossdk.io/log"
@@ -19,8 +20,9 @@ type (
 	IsSudoAdmin func(ctx context.Context, addr string) bool
 
 	Keeper struct {
-		cdc      codec.BinaryCodec
-		storeKey store.StoreKey
+		cdc       codec.BinaryCodec
+		storeKey  store.StoreKey
+		permAddrs map[string]authtypes.PermissionsForAddress
 
 		accountKeeper       types.AccountKeeper
 		bankKeeper          types.BankKeeper
@@ -40,6 +42,7 @@ type (
 func NewKeeper(
 	cdc codec.BinaryCodec,
 	storeKey store.StoreKey,
+	maccPerms map[string][]string,
 	accountKeeper types.AccountKeeper,
 	bankKeeper types.BankKeeper,
 	communityPoolKeeper types.CommunityPoolKeeper,
@@ -48,9 +51,15 @@ func NewKeeper(
 	isSudoAdminFunc IsSudoAdmin,
 	authority string,
 ) Keeper {
+	permAddrs := make(map[string]authtypes.PermissionsForAddress)
+	for name, perms := range maccPerms {
+		permAddrs[name] = authtypes.NewPermissionsForAddress(name, perms)
+	}
+
 	return Keeper{
-		cdc:      cdc,
-		storeKey: storeKey,
+		cdc:       cdc,
+		storeKey:  storeKey,
+		permAddrs: permAddrs,
 
 		accountKeeper:       accountKeeper,
 		bankKeeper:          bankKeeper,

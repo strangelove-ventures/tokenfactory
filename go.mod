@@ -216,3 +216,5 @@ require (
 	github.com/opencontainers/runc v1.1.5 // indirect
 	github.com/sirupsen/logrus v1.9.3 // indirect
 )
+
+require github.com/gogo/status v1.1.0
