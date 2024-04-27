@@ -84,8 +84,20 @@ func (k Keeper) chargeForCreateDenom(ctx sdk.Context, creatorAddr string, _ stri
 			return err
 		}
 
-		if err := k.communityPoolKeeper.FundCommunityPool(ctx, params.DenomCreationFee, accAddr); err != nil {
-			return err
+		if types.IsCapabilityEnabled(k.enabledCapabilities, types.EnableCommunityPoolFeeFunding) {
+			if err := k.communityPoolKeeper.FundCommunityPool(ctx, params.DenomCreationFee, accAddr); err != nil {
+				return err
+			}
+		} else {
+			err = k.bankKeeper.SendCoinsFromAccountToModule(ctx, accAddr, types.ModuleName, params.DenomCreationFee)
+			if err != nil {
+				return err
+			}
+
+			err = k.bankKeeper.BurnCoins(ctx, types.ModuleName, params.DenomCreationFee)
+			if err != nil {
+				return err
+			}
 		}
 	}
 

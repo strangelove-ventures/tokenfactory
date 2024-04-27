@@ -152,6 +152,7 @@ var (
 		tokenfactorytypes.EnableForceTransfer,
 		tokenfactorytypes.EnableSetMetadata,
 		tokenfactorytypes.EnableSudoMint,
+		tokenfactorytypes.EnableCommunityPoolFeeFunding,
 	}
 )
 
