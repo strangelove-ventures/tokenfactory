@@ -27,3 +27,5 @@ cache
 state
 
 configs/logs.json
+
+exclusive.lock
