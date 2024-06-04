@@ -26,7 +26,7 @@ var (
 )
 
 func init() {
-	SetAddressPrefixes()
+	// SetAddressPrefixes()
 	RegisterDenoms()
 }
 
