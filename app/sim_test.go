@@ -11,11 +11,13 @@ import (
 	"testing"
 
 	wasmkeeper "github.com/CosmWasm/wasmd/x/wasm/keeper"
-	abci "github.com/cometbft/cometbft/abci/types"
-	cmtproto "github.com/cometbft/cometbft/proto/tendermint/types"
-	dbm "github.com/cosmos/cosmos-db"
 	"github.com/spf13/viper"
 	"github.com/stretchr/testify/require"
+
+	abci "github.com/cometbft/cometbft/abci/types"
+	cmtproto "github.com/cometbft/cometbft/proto/tendermint/types"
+
+	dbm "github.com/cosmos/cosmos-db"
 
 	"cosmossdk.io/log"
 	"cosmossdk.io/store"
@@ -285,10 +287,11 @@ func TestAppSimulationAfterImport(t *testing.T) {
 	newApp := NewApp(log.NewNopLogger(), newDB, nil, true, appOptions, []wasmkeeper.Option{}, baseapp.SetChainID(SimAppChainID))
 	require.Equal(t, "tokenfactory", newApp.Name())
 
-	newApp.InitChain(&abci.RequestInitChain{
+	_, err = newApp.InitChain(&abci.RequestInitChain{
 		AppStateBytes: exported.AppState,
 		ChainId:       SimAppChainID,
 	})
+	require.NoError(t, err)
 
 	_, _, err = simulation.SimulateFromSeed(
 		t,
