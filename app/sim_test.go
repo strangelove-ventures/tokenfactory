@@ -20,7 +20,6 @@ import (
 	dbm "github.com/cosmos/cosmos-db"
 
 	"cosmossdk.io/log"
-	"cosmossdk.io/store"
 	storetypes "cosmossdk.io/store/types"
 	"cosmossdk.io/x/feegrant"
 
@@ -42,18 +41,6 @@ var FlagEnableStreamingValue bool
 func init() {
 	simcli.GetSimulatorFlags()
 	flag.BoolVar(&FlagEnableStreamingValue, "EnableStreaming", false, "Enable streaming service")
-}
-
-// fauxMerkleModeOpt returns a BaseApp option to use a dbStoreAdapter instead of
-// an IAVLStore for faster simulation speed.
-func fauxMerkleModeOpt(bapp *baseapp.BaseApp) {
-	bapp.SetFauxMerkleMode()
-}
-
-// interBlockCacheOpt returns a BaseApp option function that sets the persistent
-// inter-block write-through cache.
-func interBlockCacheOpt() func(*baseapp.BaseApp) {
-	return baseapp.SetInterBlockCache(store.NewCommitKVStoreCacheManager())
 }
 
 func TestFullAppSimulation(t *testing.T) {
