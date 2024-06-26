@@ -22,12 +22,12 @@ import (
 //
 //nolint:gosec
 const (
-	OpWeightMsgCreateDenom      = "op_weight_msg_create_denom"
-	OpWeightMsgMint             = "op_weight_msg_mint"
-	OpWeightMsgBurn             = "op_weight_msg_burn"
-	OpWeightMsgChangeAdmin      = "op_weight_msg_change_admin"
-	OpWeightMsgSetDenomMetadata = "op_weight_msg_set_denom_metadata"
-	OpWeightMsgForceTransfer    = "op_weight_msg_force_transfer"
+	OpWeightMsgCreateDenom      = "op_weight_msg_tf_create_denom"
+	OpWeightMsgMint             = "op_weight_msg_tf_mint"
+	OpWeightMsgBurn             = "op_weight_msg_tf_burn"
+	OpWeightMsgChangeAdmin      = "op_weight_msg_tf_change_admin"
+	OpWeightMsgSetDenomMetadata = "op_weight_msg_tf_set_denom_metadata"
+	OpWeightMsgForceTransfer    = "op_weight_msg_tf_force_transfer"
 
 	DefaultWeightMsgCreateDenom      int = 100
 	DefaultWeightMsgMint             int = 100
