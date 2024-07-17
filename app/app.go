@@ -1,3 +1,5 @@
+//go:build app_v1
+
 package app
 
 import (
@@ -142,11 +144,6 @@ import (
 
 // We pull these out so we can set them with LDFLAGS in the Makefile
 var (
-	AppName         = "tokenfactory"
-	Bech32Prefix    = "cosmos"
-	DefaultNodeHome = ".tokend"
-	BinaryName      = "tokend"
-
 	tokenFactoryCapabilities = []string{
 		tokenfactorytypes.EnableBurnFrom,
 		tokenfactorytypes.EnableForceTransfer,
@@ -164,24 +161,6 @@ func init() {
 
 	DefaultNodeHome = filepath.Join(userHomeDir, DefaultNodeHome)
 }
-
-// These constants are derived from the above variables.
-// These are the ones we will want to use in the code, based on
-// any overrides above
-var (
-	// Bech32PrefixAccAddr defines the Bech32 prefix of an account's address
-	Bech32PrefixAccAddr = Bech32Prefix
-	// Bech32PrefixAccPub defines the Bech32 prefix of an account's public key
-	Bech32PrefixAccPub = Bech32Prefix + sdk.PrefixPublic
-	// Bech32PrefixValAddr defines the Bech32 prefix of a validator's operator address
-	Bech32PrefixValAddr = Bech32Prefix + sdk.PrefixValidator + sdk.PrefixOperator
-	// Bech32PrefixValPub defines the Bech32 prefix of a validator's operator public key
-	Bech32PrefixValPub = Bech32Prefix + sdk.PrefixValidator + sdk.PrefixOperator + sdk.PrefixPublic
-	// Bech32PrefixConsAddr defines the Bech32 prefix of a consensus node address
-	Bech32PrefixConsAddr = Bech32Prefix + sdk.PrefixValidator + sdk.PrefixConsensus
-	// Bech32PrefixConsPub defines the Bech32 prefix of a consensus node public key
-	Bech32PrefixConsPub = Bech32Prefix + sdk.PrefixValidator + sdk.PrefixConsensus + sdk.PrefixPublic
-)
 
 // module account permissions
 var maccPerms = map[string][]string{
@@ -734,14 +713,6 @@ func NewApp(
 	app.BasicModuleManager.RegisterLegacyAminoCodec(legacyAmino)
 	app.BasicModuleManager.RegisterInterfaces(interfaceRegistry)
 
-	// NOTE: upgrade module is required to be prioritized
-	app.ModuleManager.SetOrderPreBlockers(
-		upgradetypes.ModuleName,
-	)
-	// During begin block slashing happens after distr.BeginBlocker so that
-	// there is nothing left over in the validator fee pool, so as to keep the
-	// CanWithdrawInvariant invariant.
-	// NOTE: staking module is required if HistoricalEntries param > 0
 	// NOTE: capability module's beginblocker must come before any modules using capabilities (e.g. IBC)
 	app.ModuleManager.SetOrderBeginBlockers(
 		minttypes.ModuleName,
