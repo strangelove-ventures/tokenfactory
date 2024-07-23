@@ -74,7 +74,7 @@ func NewKeeper(
 }
 
 // DefaultIsSudoAdminFunc returns false for all addresses.
-func DefaultIsSudoAdminFunc(ctx context.Context, addr string) bool {
+func DefaultIsSudoAdminFunc(_ context.Context, _ string) bool {
 	return false
 }
 
@@ -87,7 +87,7 @@ func (k Keeper) GetEnabledCapabilities() []string {
 	return k.enabledCapabilities
 }
 
-func (k *Keeper) SetEnabledCapabilities(ctx sdk.Context, newCapabilities []string) {
+func (k *Keeper) SetEnabledCapabilities(_ sdk.Context, newCapabilities []string) {
 	k.enabledCapabilities = newCapabilities
 }
 

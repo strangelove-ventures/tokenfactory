@@ -60,7 +60,7 @@ func (suite *KeeperTestSuite) TestMintDenomMsg() {
 			suite.Require().Equal(0, len(ctx.EventManager().Events()))
 
 			// Override the default IsSudoAdminFunc for testing
-			suite.App.TokenFactoryKeeper.IsSudoAdminFunc = func(ctx context.Context, addr string) bool {
+			suite.App.TokenFactoryKeeper.IsSudoAdminFunc = func(_ context.Context, addr string) bool {
 				return tc.sudoer == addr
 			}
 
