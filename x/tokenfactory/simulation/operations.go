@@ -168,7 +168,7 @@ func SimulateMsgSetDenomMetadata(
 		app *baseapp.BaseApp,
 		ctx sdk.Context,
 		accs []simtypes.Account,
-		chainID string,
+		_ string,
 	) (simtypes.OperationMsg, []simtypes.FutureOperation, error) {
 		msgType := sdk.MsgTypeURL(&types.MsgSetDenomMetadata{})
 
@@ -224,7 +224,7 @@ func SimulateMsgChangeAdmin(
 		app *baseapp.BaseApp,
 		ctx sdk.Context,
 		accs []simtypes.Account,
-		chainID string,
+		_ string,
 	) (simtypes.OperationMsg, []simtypes.FutureOperation, error) {
 		msgType := sdk.MsgTypeURL(&types.MsgChangeAdmin{})
 		// Get create denom account
@@ -275,7 +275,7 @@ func SimulateMsgBurn(
 		app *baseapp.BaseApp,
 		ctx sdk.Context,
 		accs []simtypes.Account,
-		chainID string,
+		_ string,
 	) (simtypes.OperationMsg, []simtypes.FutureOperation, error) {
 		msgType := sdk.MsgTypeURL(&types.MsgBurn{})
 
@@ -331,7 +331,7 @@ func SimulateMsgMint(
 		app *baseapp.BaseApp,
 		ctx sdk.Context,
 		accs []simtypes.Account,
-		chainID string,
+		_ string,
 	) (simtypes.OperationMsg, []simtypes.FutureOperation, error) {
 		msgType := sdk.MsgTypeURL(&types.MsgMint{})
 
@@ -375,7 +375,7 @@ func SimulateMsgCreateDenom(tfKeeper TokenfactoryKeeper, ak types.AccountKeeper,
 		app *baseapp.BaseApp,
 		ctx sdk.Context,
 		accs []simtypes.Account,
-		chainID string,
+		_ string,
 	) (simtypes.OperationMsg, []simtypes.FutureOperation, error) {
 		msgType := sdk.MsgTypeURL(&types.MsgCreateDenom{})
 		// Get sims account

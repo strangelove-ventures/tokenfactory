@@ -200,7 +200,7 @@ proto-lint:
 #################
 
 golangci_lint_cmd=golangci-lint
-golangci_version=v1.51.2
+golangci_version=v1.59.1
 
 lint:
 	@echo "--> Running linter"
@@ -258,3 +258,25 @@ sim-app-determinism-random:
 	$(MAKE) sim-app-determinism SIM_SEED=$$RANDOM
 
 .PHONY: sim-full-app sim-full-app-random sim-import-export sim-after-import sim-app-determinism sim-import-export-random sim-after-import-random sim-app-determinism-random
+###  Security  ###
+##################
+govulncheck_version=latest
+
+govulncheck-install:
+	@echo "--> Installing govulncheck $(govulncheck_version)"
+	@go install golang.org/x/vuln/cmd/govulncheck@$(govulncheck_version)
+	@echo "--> Installing govulncheck $(govulncheck_version) complete"
+
+govulncheck: ## Run govulncheck
+	@echo "--> Running govulncheck"
+	$(MAKE) govulncheck-install
+	@govulncheck ./... ./interchaintest/...
+
+.PHONY: govulncheck govulncheck-install
+
+vet: ## Run go vet
+	@echo "--> Running go vet"
+	@go vet ./...
+
+.PHONY: vet
+
