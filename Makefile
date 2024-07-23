@@ -130,18 +130,44 @@ test-integration:
 	@echo "--> Running integration tests"
 	cd integration; go test -v ./...
 
+COV_ROOT="/tmp/tokenfactory-coverage"
+COV_UNIT_E2E="${COV_ROOT}/unit-e2e"
+COV_SIMULATION="${COV_ROOT}/simulation"
+COV_PKG="github.com/strangelove-ventures/tokenfactory/..."
+COV_SIM_CMD=${COV_SIMULATION}/simulation.test
+COV_SIM_COMMON=-Enabled=True -NumBlocks=100 -Commit=true -Period=5 -Verbose=false -test.v -test.gocoverdir=${COV_SIMULATION}
+
 coverage: ## Run coverage report
-	@echo "--> Running coverage"
-	@go test -race -cpu=$$(nproc) -covermode=atomic -coverprofile=coverage.out $$(go list ./...) ./interchaintest/... -coverpkg=github.com/strangelove-ventures/tokenfactory/... > /dev/null 2>&1
-	@echo "--> Running coverage filter"
-	@./scripts/filter-coverage.sh
-	@echo "--> Running coverage report"
-	@go tool cover -func=coverage-filtered.out
-	@echo "--> Running coverage html"
-	@go tool cover -html=coverage-filtered.out -o coverage.html
+	@echo "--> Creating GOCOVERDIR"
+	@mkdir -p ${COV_UNIT_E2E} ${COV_SIMULATION}
+	@echo "--> Cleaning up coverage files, if any"
+	@rm -rf ${COV_UNIT_E2E}/* ${COV_SIMULATION}/*
+	@echo "--> Building instrumented simulation test binary"
+	@go test -c ./app -mod=readonly -covermode=atomic -coverpkg=${COV_PKG} -cover -o ${COV_SIM_CMD}
+	@echo "  --> Running Full App Simulation"
+	@${COV_SIM_CMD} -test.run TestFullAppSimulation ${COV_SIM_COMMON} > /dev/null 2>&1
+#   Enable after wiring v2 is implemented
+#	@echo "  --> Running App Import/Export Simulation"
+#	@${COV_SIM_CMD} -test.run TestAppImportExport ${COV_SIM_COMMON} > /dev/null 2>&1
+	@echo "  --> Running App Simulation After Import"
+	@${COV_SIM_CMD} -test.run TestAppSimulationAfterImport ${COV_SIM_COMMON} > /dev/null 2>&1
+	@echo "  --> Running App State Determinism Simulation"
+	@${COV_SIM_CMD} -test.run TestAppStateDeterminism ${COV_SIM_COMMON} > /dev/null 2>&1
+	@echo "--> Running unit & e2e tests coverage"
+	@go test -timeout 30m -race -covermode=atomic -v -cpu=$$(nproc) -cover $$(go list ./...) ./interchaintest/... -coverpkg=${COV_PKG} -args -test.gocoverdir="${COV_UNIT_E2E}" > /dev/null 2>&1
+	@echo "--> Merging coverage reports"
+	@go tool covdata merge -i=${COV_UNIT_E2E},${COV_SIMULATION} -o ${COV_ROOT}
+	@echo "--> Converting binary coverage report to text format"
+	@go tool covdata textfmt -i=${COV_ROOT} -o ${COV_ROOT}/coverage-merged.out
+	@echo "--> Filtering coverage reports"
+	@./scripts/filter-coverage.sh ${COV_ROOT}/coverage-merged.out ${COV_ROOT}/coverage-merged-filtered.out
+	@echo "--> Generating coverage report"
+	@go tool cover -func=${COV_ROOT}/coverage-merged-filtered.out
+	@echo "--> Generating HTML coverage report"
+	@go tool cover -html=${COV_ROOT}/coverage-merged-filtered.out -o coverage.html
 	@echo "--> Coverage report available at coverage.html"
 	@echo "--> Cleaning up coverage files"
-	@rm coverage.out
+	@rm -rf ${COV_UNIT_E2E}/* ${COV_SIMULATION}/*
 	@echo "--> Running coverage complete"
 
 .PHONY: test test-integration coverage
