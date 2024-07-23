@@ -201,7 +201,7 @@ govulncheck-install:
 govulncheck: ## Run govulncheck
 	@echo "--> Running govulncheck"
 	$(MAKE) govulncheck-install
-	@govulncheck ./... ./interchaintest/... ./app/...
+	@govulncheck ./... ./interchaintest/...
 
 .PHONY: govulncheck govulncheck-install
 
