@@ -1,6 +1,9 @@
 name: E2E
 
 on:
+  push:
+    branches:
+      - main
   pull_request:
 
 permissions:
