@@ -27,3 +27,4 @@ cache
 state
 
 configs/logs.json
+go.work.sum
