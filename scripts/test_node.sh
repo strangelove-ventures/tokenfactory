@@ -69,15 +69,15 @@ from_scratch () {
 
   # TokenFactory
   update_test_genesis '.app_state["tokenfactory"]["params"]["denom_creation_fee"]=[]'
-  update_test_genesis '.app_state["tokenfactory"]["params"]["denom_creation_gas_consume"]=2000000'
+  update_test_genesis '.app_state["tokenfactory"]["params"]["denom_creation_gas_consume"]=0'
 
   # Allocate genesis accounts
-  BINARY genesis add-genesis-account $KEY 1000000ustake,10000000token,1000utest --keyring-backend $KEYRING
-  BINARY genesis add-genesis-account $KEY2 100000000000000000000000token,1000utest --keyring-backend $KEYRING
+  BINARY genesis add-genesis-account $KEY 1000000ustake,10000000token --keyring-backend $KEYRING
+  BINARY genesis add-genesis-account $KEY2 100000000000000000000000token --keyring-backend $KEYRING
 
   # must have at least 1 full token to be valid to start.
   GenTxFlags="--commission-rate=0.0 --commission-max-rate=1.0 --commission-max-change-rate=0.1"
-  BINARY genesis gentx $KEY 1000000ustake --keyring-backend $KEYRING --chain-id $CHAIN_ID $GenTxFlags
+  BINARY genesis gentx $KEY 1000000token --keyring-backend $KEYRING --chain-id $CHAIN_ID $GenTxFlags
 
   # Collect genesis tx
   BINARY genesis collect-gentxs --home=$HOME_DIR
