@@ -126,10 +126,6 @@ test:
 	@echo "--> Running tests"
 	go test -v ./...
 
-test-integration:
-	@echo "--> Running integration tests"
-	cd integration; go test -v ./...
-
 COV_ROOT="/tmp/tokenfactory-coverage"
 COV_UNIT_E2E="${COV_ROOT}/unit-e2e"
 COV_SIMULATION="${COV_ROOT}/simulation"
@@ -170,7 +166,7 @@ coverage: ## Run coverage report
 	@rm -rf ${COV_UNIT_E2E}/* ${COV_SIMULATION}/*
 	@echo "--> Running coverage complete"
 
-.PHONY: test test-integration coverage
+.PHONY: test coverage
 
 ##################
 ###  Protobuf  ###
