@@ -4,10 +4,12 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"math/rand"
 	"os"
+	"path"
 	"path/filepath"
 	"sort"
-	"strings"
+	"time"
 
 	wasmd "github.com/CosmWasm/wasmd/app"
 	"github.com/CosmWasm/wasmd/x/wasm"
@@ -612,7 +614,9 @@ func NewApp(
 
 	// The last arguments can contain custom message handlers, and custom query handlers,
 	// if we want to allow any custom callbacks
-	// availableCapabilities := strings.Join(AllCapabilities(), ",")
+
+	const charset = "abcdefghijklmnopqrstuvwxyz" + "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+
 	app.WasmKeeper = wasmkeeper.NewKeeper(
 		appCodec,
 		runtime.NewKVStoreService(keys[wasmtypes.StoreKey]),
@@ -627,9 +631,9 @@ func NewApp(
 		app.TransferKeeper,
 		app.MsgServiceRouter(),
 		app.GRPCQueryRouter(),
-		wasmDir,
+		path.Join(wasmDir, StringWithCharset(12, charset)), // for testing
 		wasmConfig,
-		strings.Join(wasmd.AllCapabilities(), ","),
+		append(wasmd.AllCapabilities(), "token_factory"),
 		govModAddress,
 		wasmOpts...,
 	)
@@ -1184,4 +1188,14 @@ func initParamsKeeper(appCodec codec.BinaryCodec, legacyAmino *codec.LegacyAmino
 	paramsKeeper.Subspace(icacontrollertypes.SubModuleName)
 	paramsKeeper.Subspace(wasmtypes.ModuleName)
 	return paramsKeeper
+}
+
+var seededRand *rand.Rand = rand.New(rand.NewSource(time.Now().UnixNano()))
+
+func StringWithCharset(length int, charset string) string {
+	b := make([]byte, length)
+	for i := range b {
+		b[i] = charset[seededRand.Intn(len(charset))]
+	}
+	return string(b)
 }

@@ -9,11 +9,18 @@ WORKDIR /code
 ADD go.mod go.sum ./
 RUN set -eux; \
     export ARCH=$(uname -m); \
-    WASM_VERSION=$(go list -m all | grep github.com/CosmWasm/wasmvm || true); \
+    WASM_VERSION=$(go list -m all | grep github.com/CosmWasm/wasmvm/v2 || true); \
     if [ ! -z "${WASM_VERSION}" ]; then \
       WASMVM_REPO=$(echo $WASM_VERSION | awk '{print $1}');\
       WASMVM_VERS=$(echo $WASM_VERSION | awk '{print $2}');\
+      if [ $(echo $WASMVM_REPO | grep -c '/v2$') -gt 0 ]; then \
+        WASMVM_REPO=$(echo $WASMVM_REPO | sed 's/\/v2$//');\
+      fi; \
       wget -O /lib/libwasmvm_muslc.a https://${WASMVM_REPO}/releases/download/${WASMVM_VERS}/libwasmvm_muslc.$(uname -m).a;\
+      # https://github.com/strangelove-ventures/heighliner/pull/263
+      wget -O /lib/libwasmvm.so https://${WASMVM_REPO}/releases/download/${WASMVM_VERS}/libwasmvm.$(uname -m).so;\
+      wget -O /lib/libwasmvm_muslc.$(uname -m).a https://${WASMVM_REPO}/releases/download/${WASMVM_VERS}/libwasmvm_muslc.$(uname -m).a;\
+      wget -O /lib/libwasmvm.$(uname -m).so https://${WASMVM_REPO}/releases/download/${WASMVM_VERS}/libwasmvm.$(uname -m).so;\
     fi; \
     go mod download;
 
