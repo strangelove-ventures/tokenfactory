@@ -7,6 +7,13 @@ The `tokenfactory` module allows any account to create a new token with the name
 - Create a transfer of their denom between any two accounts
 - Change the admin. The `ChangeAdmin` functionality allows changing the master admin account, or even setting it to "", meaning no account has admin privileges of the asset.
 
+## Supported Versions
+
+| Tokenfactory | Cosmos-SDK | wasmvm | branch
+| ------------ | ---------- | ------ | ------ |
+| v0.50.X-wasmvm2 | v0.50.X | v2 | [main](https://github.com/strangelove-ventures/tokenfactory/tree/main) |
+| v0.50.X       | v0.50.X   | v1 | [main_wasmvm1](https://github.com/strangelove-ventures/tokenfactory/tree/main_wasmvm1) |
+
 ## References
 
 - Osmosis Labs [TokenFactory](https://github.com/osmosis-labs/osmosis/tree/main/x/tokenfactory)
@@ -91,7 +98,7 @@ make sim-after-import
 ```
 
 To run the `tokenfactory` application determinism simulation, run:
-    
+
 ```bash
 make sim-app-determinism
 ```
@@ -108,7 +115,7 @@ Append `-random` to the end of the commands above to run the simulation with a r
 tokend tx tokenfactory create-denom utest --from alice
 
 # Query the newly created token
-# cosmos1... is the creator address of the denom (alice) 
+# cosmos1... is the creator address of the denom (alice)
 tokend q tokenfactory denoms-from-creator cosmos1...
 denoms:
 - factory/cosmos1.../utest
@@ -131,7 +138,7 @@ tokend tx tokenfactory modify-metadata factory/cosmos1.../utest TST "My token de
 tokend q tokenfactory denom-authority-metadata factory/cosmos1.../utest
 authority_metadata:
   admin: cosmos1...
-  
+
 # Query the denom metadata from the bank module
 tokend q bank denom-metadata factory/cosmos1.../utest
 metadata:
@@ -233,7 +240,7 @@ tokend q bank balance cosmos1... factory/cosmos1.../utest
 balance:
   amount: "550"
   denom: factory/cosmos1.../utest
-  
+
 # Query the account balance of bob
 tokend q bank balance [bob-addr] factory/cosmos1.../utest
 balance:
