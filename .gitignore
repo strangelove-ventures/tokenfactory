@@ -29,3 +29,4 @@ state
 configs/logs.json
 
 exclusive.lock
+go.work.sum

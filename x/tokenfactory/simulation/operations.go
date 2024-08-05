@@ -22,12 +22,12 @@ import (
 //
 //nolint:gosec
 const (
-	OpWeightMsgCreateDenom      = "op_weight_msg_create_denom"
-	OpWeightMsgMint             = "op_weight_msg_mint"
-	OpWeightMsgBurn             = "op_weight_msg_burn"
-	OpWeightMsgChangeAdmin      = "op_weight_msg_change_admin"
-	OpWeightMsgSetDenomMetadata = "op_weight_msg_set_denom_metadata"
-	OpWeightMsgForceTransfer    = "op_weight_msg_force_transfer"
+	OpWeightMsgCreateDenom      = "op_weight_msg_tf_create_denom"
+	OpWeightMsgMint             = "op_weight_msg_tf_mint"
+	OpWeightMsgBurn             = "op_weight_msg_tf_burn"
+	OpWeightMsgChangeAdmin      = "op_weight_msg_tf_change_admin"
+	OpWeightMsgSetDenomMetadata = "op_weight_msg_tf_set_denom_metadata"
+	OpWeightMsgForceTransfer    = "op_weight_msg_tf_force_transfer"
 
 	DefaultWeightMsgCreateDenom      int = 100
 	DefaultWeightMsgMint             int = 100
@@ -168,25 +168,27 @@ func SimulateMsgSetDenomMetadata(
 		app *baseapp.BaseApp,
 		ctx sdk.Context,
 		accs []simtypes.Account,
-		chainID string,
+		_ string,
 	) (simtypes.OperationMsg, []simtypes.FutureOperation, error) {
+		msgType := sdk.MsgTypeURL(&types.MsgSetDenomMetadata{})
+
 		// Get create denom account
 		createdDenomAccount, _ := simtypes.RandomAcc(r, accs)
 
 		// Get demon
 		denom, hasDenom := denomSelector(r, ctx, tfKeeper, createdDenomAccount.Address.String())
 		if !hasDenom {
-			return simtypes.NoOpMsg(types.ModuleName, types.MsgSetDenomMetadata{}.Type(), "sim account have no denom created"), nil, nil
+			return simtypes.NoOpMsg(types.ModuleName, msgType, "sim account have no denom created"), nil, nil
 		}
 
 		// Get admin of the denom
 		authData, err := tfKeeper.GetAuthorityMetadata(ctx, denom)
 		if err != nil {
-			return simtypes.NoOpMsg(types.ModuleName, types.MsgSetDenomMetadata{}.Type(), "err authority metadata"), nil, err
+			return simtypes.NoOpMsg(types.ModuleName, msgType, "err authority metadata"), nil, err
 		}
 		adminAccount, found := simtypes.FindAccount(accs, sdk.MustAccAddressFromBech32(authData.Admin))
 		if !found {
-			return simtypes.NoOpMsg(types.ModuleName, types.MsgSetDenomMetadata{}.Type(), "admin account not found"), nil, nil
+			return simtypes.NoOpMsg(types.ModuleName, msgType, "admin account not found"), nil, nil
 		}
 
 		metadata := banktypes.Metadata{
@@ -222,31 +224,32 @@ func SimulateMsgChangeAdmin(
 		app *baseapp.BaseApp,
 		ctx sdk.Context,
 		accs []simtypes.Account,
-		chainID string,
+		_ string,
 	) (simtypes.OperationMsg, []simtypes.FutureOperation, error) {
+		msgType := sdk.MsgTypeURL(&types.MsgChangeAdmin{})
 		// Get create denom account
 		createdDenomAccount, _ := simtypes.RandomAcc(r, accs)
 
 		// Get demon
 		denom, hasDenom := denomSelector(r, ctx, tfKeeper, createdDenomAccount.Address.String())
 		if !hasDenom {
-			return simtypes.NoOpMsg(types.ModuleName, types.MsgChangeAdmin{}.Type(), "sim account have no denom created"), nil, nil
+			return simtypes.NoOpMsg(types.ModuleName, msgType, "sim account have no denom created"), nil, nil
 		}
 
 		// Get admin of the denom
 		authData, err := tfKeeper.GetAuthorityMetadata(ctx, denom)
 		if err != nil {
-			return simtypes.NoOpMsg(types.ModuleName, types.MsgChangeAdmin{}.Type(), "err authority metadata"), nil, err
+			return simtypes.NoOpMsg(types.ModuleName, msgType, "err authority metadata"), nil, err
 		}
 		curAdminAccount, found := simtypes.FindAccount(accs, sdk.MustAccAddressFromBech32(authData.Admin))
 		if !found {
-			return simtypes.NoOpMsg(types.ModuleName, types.MsgChangeAdmin{}.Type(), "admin account not found"), nil, nil
+			return simtypes.NoOpMsg(types.ModuleName, msgType, "admin account not found"), nil, nil
 		}
 
 		// Rand new admin account
 		newAdmin, _ := simtypes.RandomAcc(r, accs)
 		if newAdmin.Address.String() == curAdminAccount.Address.String() {
-			return simtypes.NoOpMsg(types.ModuleName, types.MsgChangeAdmin{}.Type(), "new admin cannot be the same as current admin"), nil, nil
+			return simtypes.NoOpMsg(types.ModuleName, msgType, "new admin cannot be the same as current admin"), nil, nil
 		}
 
 		// Create msg
@@ -272,31 +275,33 @@ func SimulateMsgBurn(
 		app *baseapp.BaseApp,
 		ctx sdk.Context,
 		accs []simtypes.Account,
-		chainID string,
+		_ string,
 	) (simtypes.OperationMsg, []simtypes.FutureOperation, error) {
+		msgType := sdk.MsgTypeURL(&types.MsgBurn{})
+
 		// Get create denom account
 		createdDenomAccount, _ := simtypes.RandomAcc(r, accs)
 
 		// Get demon
 		denom, hasDenom := denomSelector(r, ctx, tfKeeper, createdDenomAccount.Address.String())
 		if !hasDenom {
-			return simtypes.NoOpMsg(types.ModuleName, types.MsgBurn{}.Type(), "sim account have no denom created"), nil, nil
+			return simtypes.NoOpMsg(types.ModuleName, msgType, "sim account have no denom created"), nil, nil
 		}
 
 		// Get admin of the denom
 		authData, err := tfKeeper.GetAuthorityMetadata(ctx, denom)
 		if err != nil {
-			return simtypes.NoOpMsg(types.ModuleName, types.MsgBurn{}.Type(), "err authority metadata"), nil, err
+			return simtypes.NoOpMsg(types.ModuleName, msgType, "err authority metadata"), nil, err
 		}
 		adminAccount, found := simtypes.FindAccount(accs, sdk.MustAccAddressFromBech32(authData.Admin))
 		if !found {
-			return simtypes.NoOpMsg(types.ModuleName, types.MsgBurn{}.Type(), "admin account not found"), nil, nil
+			return simtypes.NoOpMsg(types.ModuleName, msgType, "admin account not found"), nil, nil
 		}
 
 		// Check if admin account balance = 0
 		accountBalance := bk.GetBalance(ctx, adminAccount.Address, denom)
 		if accountBalance.Amount.LTE(sdkmath.ZeroInt()) {
-			return simtypes.NoOpMsg(types.ModuleName, types.MsgBurn{}.Type(), "sim account have no balance"), nil, nil
+			return simtypes.NoOpMsg(types.ModuleName, msgType, "sim account have no balance"), nil, nil
 		}
 
 		// Rand burn amount
@@ -326,25 +331,27 @@ func SimulateMsgMint(
 		app *baseapp.BaseApp,
 		ctx sdk.Context,
 		accs []simtypes.Account,
-		chainID string,
+		_ string,
 	) (simtypes.OperationMsg, []simtypes.FutureOperation, error) {
+		msgType := sdk.MsgTypeURL(&types.MsgMint{})
+
 		// Get create denom account
 		createdDenomAccount, _ := simtypes.RandomAcc(r, accs)
 
 		// Get demon
 		denom, hasDenom := denomSelector(r, ctx, tfKeeper, createdDenomAccount.Address.String())
 		if !hasDenom {
-			return simtypes.NoOpMsg(types.ModuleName, types.MsgMint{}.Type(), "sim account have no denom created"), nil, nil
+			return simtypes.NoOpMsg(types.ModuleName, msgType, "sim account have no denom created"), nil, nil
 		}
 
 		// Get admin of the denom
 		authData, err := tfKeeper.GetAuthorityMetadata(ctx, denom)
 		if err != nil {
-			return simtypes.NoOpMsg(types.ModuleName, types.MsgMint{}.Type(), "err authority metadata"), nil, err
+			return simtypes.NoOpMsg(types.ModuleName, msgType, "err authority metadata"), nil, err
 		}
 		adminAccount, found := simtypes.FindAccount(accs, sdk.MustAccAddressFromBech32(authData.Admin))
 		if !found {
-			return simtypes.NoOpMsg(types.ModuleName, types.MsgMint{}.Type(), "admin account not found"), nil, nil
+			return simtypes.NoOpMsg(types.ModuleName, msgType, "admin account not found"), nil, nil
 		}
 
 		// Rand mint amount
@@ -368,8 +375,9 @@ func SimulateMsgCreateDenom(tfKeeper TokenfactoryKeeper, ak types.AccountKeeper,
 		app *baseapp.BaseApp,
 		ctx sdk.Context,
 		accs []simtypes.Account,
-		chainID string,
+		_ string,
 	) (simtypes.OperationMsg, []simtypes.FutureOperation, error) {
+		msgType := sdk.MsgTypeURL(&types.MsgCreateDenom{})
 		// Get sims account
 		simAccount, _ := simtypes.RandomAcc(r, accs)
 
@@ -378,7 +386,7 @@ func SimulateMsgCreateDenom(tfKeeper TokenfactoryKeeper, ak types.AccountKeeper,
 		balances := bk.GetAllBalances(ctx, simAccount.Address)
 		_, hasNeg := balances.SafeSub(createFee[0])
 		if hasNeg {
-			return simtypes.NoOpMsg(types.ModuleName, types.MsgCreateDenom{}.Type(), "Creator not enough creation fee"), nil, nil
+			return simtypes.NoOpMsg(types.ModuleName, msgType, "Creator not enough creation fee"), nil, nil
 		}
 
 		// Create msg create denom

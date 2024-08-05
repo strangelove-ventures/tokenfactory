@@ -154,6 +154,7 @@ var (
 		tokenfactorytypes.EnableForceTransfer,
 		tokenfactorytypes.EnableSetMetadata,
 		tokenfactorytypes.EnableSudoMint,
+		tokenfactorytypes.EnableCommunityPoolFeeFunding,
 	}
 )
 
@@ -549,6 +550,7 @@ func NewApp(
 	app.TokenFactoryKeeper = tokenfactorykeeper.NewKeeper(
 		appCodec,
 		app.keys[tokenfactorytypes.StoreKey],
+		maccPerms,
 		app.AccountKeeper,
 		app.BankKeeper,
 		app.DistrKeeper,
@@ -960,12 +962,12 @@ func (app *TokenFactoryApp) setPostHandler() {
 // Name returns the name of the App
 func (app *TokenFactoryApp) Name() string { return app.BaseApp.Name() }
 
-func (app *TokenFactoryApp) ProcessProposalHandler(ctx sdk.Context, req *abci.RequestProcessProposal) (*abci.ResponseProcessProposal, error) {
+func (app *TokenFactoryApp) ProcessProposalHandler(_ sdk.Context, _ *abci.RequestProcessProposal) (*abci.ResponseProcessProposal, error) {
 	return &abci.ResponseProcessProposal{Status: abci.ResponseProcessProposal_ACCEPT}, nil
 }
 
 // PreBlocker application updates every pre block
-func (app *TokenFactoryApp) PreBlocker(ctx sdk.Context, req *abci.RequestFinalizeBlock) (*sdk.ResponsePreBlock, error) {
+func (app *TokenFactoryApp) PreBlocker(ctx sdk.Context, _ *abci.RequestFinalizeBlock) (*sdk.ResponsePreBlock, error) {
 	return app.ModuleManager.PreBlock(ctx)
 }
 

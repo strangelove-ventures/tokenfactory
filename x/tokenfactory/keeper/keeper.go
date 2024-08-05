@@ -12,6 +12,7 @@ import (
 
 	"github.com/cosmos/cosmos-sdk/codec"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 )
 
 type (
@@ -19,8 +20,9 @@ type (
 	IsSudoAdmin func(ctx context.Context, addr string) bool
 
 	Keeper struct {
-		cdc      codec.BinaryCodec
-		storeKey store.StoreKey
+		cdc       codec.BinaryCodec
+		storeKey  store.StoreKey
+		permAddrs map[string]authtypes.PermissionsForAddress
 
 		accountKeeper       types.AccountKeeper
 		bankKeeper          types.BankKeeper
@@ -40,6 +42,7 @@ type (
 func NewKeeper(
 	cdc codec.BinaryCodec,
 	storeKey store.StoreKey,
+	maccPerms map[string][]string,
 	accountKeeper types.AccountKeeper,
 	bankKeeper types.BankKeeper,
 	communityPoolKeeper types.CommunityPoolKeeper,
@@ -48,9 +51,15 @@ func NewKeeper(
 	isSudoAdminFunc IsSudoAdmin,
 	authority string,
 ) Keeper {
+	permAddrs := make(map[string]authtypes.PermissionsForAddress)
+	for name, perms := range maccPerms {
+		permAddrs[name] = authtypes.NewPermissionsForAddress(name, perms)
+	}
+
 	return Keeper{
-		cdc:      cdc,
-		storeKey: storeKey,
+		cdc:       cdc,
+		storeKey:  storeKey,
+		permAddrs: permAddrs,
 
 		accountKeeper:       accountKeeper,
 		bankKeeper:          bankKeeper,
@@ -65,7 +74,7 @@ func NewKeeper(
 }
 
 // DefaultIsSudoAdminFunc returns false for all addresses.
-func DefaultIsSudoAdminFunc(ctx context.Context, addr string) bool {
+func DefaultIsSudoAdminFunc(_ context.Context, _ string) bool {
 	return false
 }
 
@@ -78,7 +87,7 @@ func (k Keeper) GetEnabledCapabilities() []string {
 	return k.enabledCapabilities
 }
 
-func (k *Keeper) SetEnabledCapabilities(ctx sdk.Context, newCapabilities []string) {
+func (k *Keeper) SetEnabledCapabilities(_ sdk.Context, newCapabilities []string) {
 	k.enabledCapabilities = newCapabilities
 }
 
