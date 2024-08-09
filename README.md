@@ -1,5 +1,8 @@
 # Token Factory
 
+![GitHub commit check runs](https://img.shields.io/github/check-runs/strangelove-ventures/tokenfactory/main)
+![Codecov](https://img.shields.io/codecov/c/github/strangelove-ventures/tokenfactory)
+
 The `tokenfactory` module allows any account to create a new token with the name `factory/{creator address}/{subdenom}`. Because tokens are namespaced by creator address, this allows token minting to be permissionless, due to not needing to resolve name collisions. A single account can create multiple denoms, by providing a unique subdenom for each created denom. Once a denom is created, the original creator is given "admin" privileges over the asset. This allows them to:
 
 - Mint their denom to any account
