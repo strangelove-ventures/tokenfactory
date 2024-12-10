@@ -23,6 +23,20 @@ func (suite *KeeperTestSuite) TestAdminMsgs() {
 	suite.Require().NoError(err)
 	suite.Require().Equal(suite.TestAccs[0].String(), queryRes.AuthorityMetadata.Admin)
 
+	// Test getting denoms from admin
+	adminRes, err := suite.queryClient.DenomsFromAdmin(suite.Ctx.Context(), &types.QueryDenomsFromAdminRequest{
+		Admin: suite.TestAccs[0].String(),
+	})
+	suite.Require().NoError(err)
+	suite.Require().Equal([]string{suite.defaultDenom}, adminRes.Denoms)
+
+	// Veriry that the other account has no denoms
+	adminRes, err = suite.queryClient.DenomsFromAdmin(suite.Ctx.Context(), &types.QueryDenomsFromAdminRequest{
+		Admin: suite.TestAccs[1].String(),
+	})
+	suite.Require().NoError(err)
+	suite.Require().Nil(adminRes.Denoms)
+
 	// Test minting to admins own account
 	_, err = suite.msgServer.Mint(suite.Ctx, types.NewMsgMint(suite.TestAccs[0].String(), sdk.NewInt64Coin(suite.defaultDenom, 10)))
 	addr0bal += 10
@@ -57,6 +71,20 @@ func (suite *KeeperTestSuite) TestAdminMsgs() {
 	suite.Require().NoError(err)
 	suite.Require().Equal(suite.TestAccs[1].String(), queryRes.AuthorityMetadata.Admin)
 
+	// Test query from admin returns the correct denoms. The old admin should have no denoms
+	adminRes, err = suite.queryClient.DenomsFromAdmin(suite.Ctx.Context(), &types.QueryDenomsFromAdminRequest{
+		Admin: suite.TestAccs[0].String(),
+	})
+	suite.Require().NoError(err)
+	suite.Require().Nil(adminRes.Denoms)
+
+	// The new admin should have the default denom
+	adminRes, err = suite.queryClient.DenomsFromAdmin(suite.Ctx.Context(), &types.QueryDenomsFromAdminRequest{
+		Admin: suite.TestAccs[1].String(),
+	})
+	suite.Require().NoError(err)
+	suite.Require().Equal([]string{suite.defaultDenom}, adminRes.Denoms)
+
 	// Make sure old admin can no longer do actions
 	_, err = suite.msgServer.Burn(suite.Ctx, types.NewMsgBurn(suite.TestAccs[0].String(), sdk.NewInt64Coin(suite.defaultDenom, 5)))
 	suite.Require().Error(err)
@@ -75,6 +103,26 @@ func (suite *KeeperTestSuite) TestAdminMsgs() {
 	})
 	suite.Require().NoError(err)
 	suite.Require().Equal("", queryRes.AuthorityMetadata.Admin)
+
+	// Make sure retrieving denoms by admin works with empty admin
+	adminRes, err = suite.queryClient.DenomsFromAdmin(suite.Ctx.Context(), &types.QueryDenomsFromAdminRequest{
+		Admin: "",
+	})
+	suite.Require().NoError(err)
+	suite.Require().Equal([]string{suite.defaultDenom}, adminRes.Denoms)
+
+	// Make sure the other accounts are not admins
+	adminRes, err = suite.queryClient.DenomsFromAdmin(suite.Ctx.Context(), &types.QueryDenomsFromAdminRequest{
+		Admin: suite.TestAccs[0].String(),
+	})
+	suite.Require().NoError(err)
+	suite.Require().Nil(adminRes.Denoms)
+
+	adminRes, err = suite.queryClient.DenomsFromAdmin(suite.Ctx.Context(), &types.QueryDenomsFromAdminRequest{
+		Admin: suite.TestAccs[1].String(),
+	})
+	suite.Require().NoError(err)
+	suite.Require().Nil(adminRes.Denoms)
 }
 
 // TestMintDenom ensures the following properties of the MintMessage:

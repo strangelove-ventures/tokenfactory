@@ -25,6 +25,7 @@ func GetQueryCmd() *cobra.Command {
 		GetParams(),
 		GetCmdDenomAuthorityMetadata(),
 		GetCmdDenomsFromCreator(),
+		GetCmdDenomsFromAdmin(),
 	)
 
 	return cmd
@@ -101,6 +102,34 @@ func GetCmdDenomsFromCreator() *cobra.Command {
 
 			res, err := queryClient.DenomsFromCreator(cmd.Context(), &types.QueryDenomsFromCreatorRequest{
 				Creator: args[0],
+			})
+			if err != nil {
+				return err
+			}
+
+			return clientCtx.PrintProto(res)
+		},
+	}
+
+	flags.AddQueryFlagsToCmd(cmd)
+
+	return cmd
+}
+
+func GetCmdDenomsFromAdmin() *cobra.Command {
+	cmd := &cobra.Command{
+		Use:   "denoms-from-admin [admin address] [flags]",
+		Short: "Returns a list of all tokens owned by a specific admin address",
+		Args:  cobra.ExactArgs(1),
+		RunE: func(cmd *cobra.Command, args []string) error {
+			clientCtx, err := client.GetClientQueryContext(cmd)
+			if err != nil {
+				return err
+			}
+			queryClient := types.NewQueryClient(clientCtx)
+
+			res, err := queryClient.DenomsFromAdmin(cmd.Context(), &types.QueryDenomsFromAdminRequest{
+				Admin: args[0],
 			})
 			if err != nil {
 				return err
