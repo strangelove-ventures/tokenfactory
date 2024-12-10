@@ -33,3 +33,12 @@ func (k Keeper) DenomsFromCreator(ctx context.Context, req *types.QueryDenomsFro
 	denoms := k.GetDenomsFromCreator(sdkCtx, req.GetCreator())
 	return &types.QueryDenomsFromCreatorResponse{Denoms: denoms}, nil
 }
+
+func (k Keeper) DenomsFromAdmin(ctx context.Context, req *types.QueryDenomsFromAdminRequest) (*types.QueryDenomsFromAdminResponse, error) {
+	sdkCtx := sdk.UnwrapSDKContext(ctx)
+	denoms, err := k.GetDenomsFromAdmin(sdkCtx, req.GetAdmin())
+	if err != nil {
+		return nil, err
+	}
+	return &types.QueryDenomsFromAdminResponse{Denoms: denoms}, nil
+}

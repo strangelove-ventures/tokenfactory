@@ -4,7 +4,6 @@ import (
 	"context"
 
 	"cosmossdk.io/store"
-
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 

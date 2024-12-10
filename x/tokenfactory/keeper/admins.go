@@ -50,3 +50,22 @@ func (k Keeper) setAdmin(ctx context.Context, denom string, admin string) error 
 
 	return k.setAuthorityMetadata(ctx, denom, metadata)
 }
+
+// GetDenomsFromAdmin returns all denoms for which the provided address is the admin
+func (k Keeper) GetDenomsFromAdmin(ctx context.Context, admin string) ([]string, error) {
+	iterator := k.GetAllDenomsIterator(ctx)
+	defer iterator.Close()
+
+	denoms := []string{}
+	for ; iterator.Valid(); iterator.Next() {
+		denom := string(iterator.Value())
+		metadata, err := k.GetAuthorityMetadata(sdk.UnwrapSDKContext(ctx), denom)
+		if err != nil {
+			return nil, err
+		}
+		if metadata.Admin == admin {
+			denoms = append(denoms, denom)
+		}
+	}
+	return denoms, nil
+}

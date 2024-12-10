@@ -62,6 +62,7 @@ and the following queries:
 - `params`: Get the tokenfactory module parameters.
 - `denom-authority-metadata`: Get the authority metadata of a denom.
 - `denoms-from-creator`: Returns a list of all denoms created by a given creator.
+- `denoms-from-admin`: Returns a list of all denoms for which a given address is the admin.
 
 ## Testing
 

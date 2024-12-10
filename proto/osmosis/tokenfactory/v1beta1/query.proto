@@ -32,6 +32,14 @@ service Query {
     option (google.api.http).get =
         "/osmosis/tokenfactory/v1beta1/denoms_from_creator/{creator}";
   }
+
+  // DenomsFromAdmin defines a gRPC query method for fetching all
+  // denominations owned by a specific admin.
+  rpc DenomsFromAdmin(QueryDenomsFromAdminRequest)
+      returns (QueryDenomsFromAdminResponse) {
+    option (google.api.http).get =
+        "/osmosis/tokenfactory/v1beta1/denoms_from_admin/{admin}";
+      }
 }
 
 // QueryParamsRequest is the request type for the Query/Params RPC method.
@@ -67,5 +75,17 @@ message QueryDenomsFromCreatorRequest {
 // QueryDenomsFromCreatorRequest defines the response structure for the
 // DenomsFromCreator gRPC query.
 message QueryDenomsFromCreatorResponse {
+  repeated string denoms = 1 [ (gogoproto.moretags) = "yaml:\"denoms\"" ];
+}
+
+// QueryDenomsFromAdminRequest defines the request structure for the
+// DenomsFromAdmin gRPC query.
+message QueryDenomsFromAdminRequest {
+  string admin = 1 [ (gogoproto.moretags) = "yaml:\"admin\"" ];
+}
+
+// QueryDenomsFromAdminRequest defines the response structure for the
+// DenomsFromAdmin gRPC query.
+message QueryDenomsFromAdminResponse {
   repeated string denoms = 1 [ (gogoproto.moretags) = "yaml:\"denoms\"" ];
 }
