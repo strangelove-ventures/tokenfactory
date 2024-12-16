@@ -14,7 +14,7 @@ const (
 
 func IsCapabilityEnabled(enabledCapabilities []string, capability string) bool {
 	if len(enabledCapabilities) == 0 {
-		return true
+		return false
 	}
 
 	for _, v := range enabledCapabilities {
