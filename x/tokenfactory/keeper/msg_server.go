@@ -172,7 +172,7 @@ func (server msgServer) ChangeAdmin(goCtx context.Context, msg *types.MsgChangeA
 		return nil, types.ErrUnauthorized
 	}
 
-	err = server.Keeper.setAdmin(ctx, msg.Denom, msg.NewAdmin)
+	err = server.Keeper.setAdmin(ctx, authorityMetadata, msg.Denom, msg.NewAdmin)
 	if err != nil {
 		return nil, err
 	}
