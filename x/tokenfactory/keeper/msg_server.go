@@ -85,7 +85,7 @@ func (server msgServer) Mint(goCtx context.Context, msg *types.MsgMint) (*types.
 	ctx.EventManager().EmitEvents(sdk.Events{
 		sdk.NewEvent(
 			types.TypeMsgMint,
-			sdk.NewAttribute(types.AttributeMintToAddress, msg.Sender),
+			sdk.NewAttribute(types.AttributeMintToAddress, msg.MintToAddress),
 			sdk.NewAttribute(types.AttributeAmount, msg.Amount.String()),
 		),
 	})
@@ -119,7 +119,7 @@ func (server msgServer) Burn(goCtx context.Context, msg *types.MsgBurn) (*types.
 	ctx.EventManager().EmitEvents(sdk.Events{
 		sdk.NewEvent(
 			types.TypeMsgBurn,
-			sdk.NewAttribute(types.AttributeBurnFromAddress, msg.Sender),
+			sdk.NewAttribute(types.AttributeBurnFromAddress, msg.BurnFromAddress),
 			sdk.NewAttribute(types.AttributeAmount, msg.Amount.String()),
 		),
 	})
@@ -172,7 +172,7 @@ func (server msgServer) ChangeAdmin(goCtx context.Context, msg *types.MsgChangeA
 		return nil, types.ErrUnauthorized
 	}
 
-	err = server.Keeper.setAdmin(ctx, msg.Denom, msg.NewAdmin)
+	err = server.Keeper.setAdmin(ctx, authorityMetadata, msg.Denom, msg.NewAdmin)
 	if err != nil {
 		return nil, err
 	}
