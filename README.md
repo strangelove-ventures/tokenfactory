@@ -1,5 +1,9 @@
 # Token Factory
 
+[Audited](https://hashlock.com/wp-content/uploads/2024/11/Manifest-Token-Factory-Smart-Contract-Audit-Report-Revised-Report-v2.pdf) by [HashLock](https://hashlock.com/audits/manifest) (November 2024)
+
+</br>
+
 ![GitHub commit check runs](https://img.shields.io/github/check-runs/strangelove-ventures/tokenfactory/main)
 ![Codecov](https://img.shields.io/codecov/c/github/strangelove-ventures/tokenfactory)
 
