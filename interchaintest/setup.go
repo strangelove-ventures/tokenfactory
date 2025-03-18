@@ -45,7 +45,7 @@ var (
 			{
 				Repository: "tokenfactory",
 				Version:    "local",
-				UidGid:     "1025:1025",
+				UIDGID:     "1025:1025",
 			},
 		},
 		Bin:            "tokend",
