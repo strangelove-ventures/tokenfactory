@@ -2,8 +2,6 @@ module github.com/strangelove-ventures/tokenfactory/interchaintest
 
 go 1.23.6
 
-toolchain go1.23.7
-
 // ibc-v10 support
 replace github.com/strangelove-ventures/interchaintest/v8 => github.com/cosmos/interchaintest/v8 v8.8.2-0.20250305184330-0bb5f20ad3bd
 
@@ -11,10 +9,8 @@ replace (
 	cosmossdk.io/core => cosmossdk.io/core v0.11.0
 	github.com/ChainSafe/go-schnorrkel => github.com/ChainSafe/go-schnorrkel v0.0.0-20200405005733-88cbf1b4c40d
 	github.com/ChainSafe/go-schnorrkel/1 => github.com/ChainSafe/go-schnorrkel v1.0.0
-	github.com/btcsuite/btcd/btcec/v2 => github.com/btcsuite/btcd/btcec/v2 v2.3.2 // 2.3.4 breaks api
-	github.com/cosmos/cosmos-sdk => github.com/cosmos/cosmos-sdk v0.50.9-lsm
+	github.com/btcsuite/btcd/btcec/v2 => github.com/btcsuite/btcd/btcec/v2 v2.3.3 // 2.3.4 breaks api
 	github.com/cosmos/iavl => github.com/cosmos/iavl v1.1.2
-	github.com/cosmos/interchain-security/v5 => github.com/cosmos/interchain-security/v5 v5.0.0-20240905162918-300530f18130
 	github.com/ethereum/go-ethereum => github.com/ethereum/go-ethereum v1.14.5 // indirect
 	github.com/gogo/protobuf => github.com/regen-network/protobuf v1.3.3-alpha.regen.1
 	github.com/vedhavyas/go-subkey => github.com/strangelove-ventures/go-subkey v1.0.7
@@ -94,7 +90,7 @@ require (
 	github.com/cosmos/ibc-go/v10 v10.0.0-beta.0.0.20250218182351-fcb6809d58dd // indirect
 	github.com/cosmos/ics23/go v0.11.0 // indirect
 	github.com/cosmos/interchain-security/v7 v7.0.0-20250220171855-c39340d2cf4c // indirect
-	github.com/cosmos/ledger-cosmos-go v0.13.3 // indirect
+	github.com/cosmos/ledger-cosmos-go v0.14.0 // indirect
 	github.com/crate-crypto/go-kzg-4844 v1.0.0 // indirect
 	github.com/danieljoos/wincred v1.2.1 // indirect
 	github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc // indirect
