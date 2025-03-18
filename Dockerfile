@@ -1,4 +1,4 @@
-FROM golang:1.21-alpine AS go-builder
+FROM golang:1.23.6-alpine AS go-builder
 
 SHELL ["/bin/sh", "-ecuxo", "pipefail"]
 
@@ -36,7 +36,7 @@ RUN LEDGER_ENABLED=false BUILD_TAGS=muslc LINK_STATICALLY=true make build \
   && (file /code/build/tokend | grep "statically linked")
 
 # --------------------------------------------------------
-FROM alpine:3.16
+FROM alpine:3.18
 
 COPY --from=go-builder /code/build/tokend /usr/bin/tokend
 
