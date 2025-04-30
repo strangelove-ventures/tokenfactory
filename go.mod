@@ -2,8 +2,6 @@ module github.com/strangelove-ventures/tokenfactory
 
 go 1.23.0
 
-toolchain go1.24.2
-
 replace (
 	github.com/spf13/viper => github.com/spf13/viper v1.17.0 // v1.18+ breaks app overrides
 	// Downgraded to avoid bugs in following commits which caused simulations to fail.
