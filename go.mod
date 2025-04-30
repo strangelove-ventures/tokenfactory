@@ -18,7 +18,7 @@ require (
 	cosmossdk.io/depinject v1.1.0 // indirect
 	cosmossdk.io/errors v1.0.2
 	cosmossdk.io/log v1.4.1
-	cosmossdk.io/math v1.5.1
+	cosmossdk.io/math v1.5.3
 	cosmossdk.io/store v1.1.1
 	cosmossdk.io/tools/confix v0.1.1
 	cosmossdk.io/x/circuit v0.1.0
@@ -222,7 +222,6 @@ require (
 )
 
 require (
-	github.com/cockroachdb/apd/v3 v3.2.1 // indirect
 	github.com/cockroachdb/fifo v0.0.0-20240606204812-0bbfbd93a7ce // indirect
 	github.com/hashicorp/golang-lru/v2 v2.0.7 // indirect
 	github.com/munnerz/goautoneg v0.0.0-20191010083416-a7dc8b61c822 // indirect
