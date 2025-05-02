@@ -7,7 +7,7 @@ on:
   pull_request:
 
 env:
-    GO_VERSION: 1.21.0
+    GO_VERSION: 1.23.0
 
 concurrency:
     group: ${{ github.workflow }}-${{ github.ref }}
